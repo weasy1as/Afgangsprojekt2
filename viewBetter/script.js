@@ -4,17 +4,15 @@ const executeScript = (font, lineHeight, bgColor, textbgColorInput) => {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
       func: (font, lineHeight, bgColor, textbgColorInput) => {
-        const paragraphs = document.querySelectorAll("p");
-        const spans = document.querySelectorAll("span");
+        const elements = document.querySelectorAll("p, span, a, h1");
 
-        paragraphs.forEach((p) => {
-          p.style.fontSize = font;
-          p.style.lineHeight = lineHeight;
-          p.style.color = textbgColorInput;
-        });
+        elements.forEach((el) => {
+          el.style.color = textbgColorInput;
 
-        spans.forEach((s) => {
-          s.style.fontSize = font;
+          if (el.tagName === "P" || el.tagName === "A") {
+            el.style.fontSize = font;
+            el.style.lineHeight = lineHeight;
+          }
         });
 
         document.body.style.backgroundColor = bgColor;
@@ -22,6 +20,11 @@ const executeScript = (font, lineHeight, bgColor, textbgColorInput) => {
         const divs = document.querySelectorAll("div");
         divs.forEach((d) => {
           d.style.backgroundColor = bgColor;
+        });
+
+        const articles = document.querySelectorAll("article");
+        articles.forEach((a) => {
+          a.style.backgroundColor = bgColor;
         });
       },
       args: [font, lineHeight, bgColor, textbgColorInput],
