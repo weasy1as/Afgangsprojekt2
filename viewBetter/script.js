@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const textbgColorInput = document.getElementById("textbgColor");
 
   const applyBtn = document.getElementById("applyBtn");
+  const resetBtn = document.getElementById("resetBtn");
 
   const fontSizeValue = document.getElementById("fontSizeValue");
   const lineHeightValue = document.getElementById("lineHeightValue");
@@ -58,5 +59,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const textcolor = textbgColorInput.value;
 
     executeScript(fontSize, lineHeight, bgColor, textcolor)();
+  });
+
+  resetBtn.addEventListener("click", () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length > 0) {
+        chrome.tabs.reload(tabs[0].id);
+      }
+    });
   });
 });
