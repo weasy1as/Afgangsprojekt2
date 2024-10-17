@@ -63,9 +63,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   resetBtn.addEventListener("click", () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs.length > 0) {
-        chrome.tabs.reload(tabs[0].id);
-      }
+      chrome.scripting.executeScript({
+        target: { tabId: tabs[0].id },
+        func: () => {
+          const elements = document.querySelectorAll("p, span, a, h1");
+
+          elements.forEach((el) => {
+            el.style.color = "";
+            el.style.fontSize = "";
+            el.style.lineHeight = "";
+          });
+
+          document.body.style.backgroundColor = "";
+
+          const divs = document.querySelectorAll("div");
+          divs.forEach((d) => {
+            d.style.backgroundColor = "";
+          });
+
+          const articles = document.querySelectorAll("article");
+          articles.forEach((a) => {
+            a.style.backgroundColor = "";
+          });
+        },
+      });
     });
   });
 });
