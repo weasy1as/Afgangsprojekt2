@@ -32,6 +32,48 @@ const executeScript = (font, lineHeight, bgColor, textbgColorInput) => {
   };
 };
 
+var id;
+function getInfo() {
+  chrome.identity.getProfileUserInfo((info) => {
+    email = info.email;
+    id = info.id;
+    console.log(email + " id:" + info.id);
+  });
+}
+
+getInfo();
+
+//database
+const fetchUserSettings = async (userId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/settings/${userId}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user settings");
+    }
+
+    const settings = await response.json();
+    console.log(settings.settings[0]);
+
+    // Now apply these settings to the current page
+    applySettings(settings.settings[0]);
+  } catch (error) {
+    console.error("Error fetching settings:", error);
+  }
+};
+
+fetchUserSettings(2020);
+
+const applySettings = (settings) => {
+  const { font, lineHeight, bgColor, textColor } = settings;
+
+  // Trigger the Chrome Scripting API to apply the settings
+
+  executeScript(font, lineHeight, bgColor, textColor)();
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   const fontSizeInput = document.getElementById("fontSize");
   const lineHeightInput = document.getElementById("lineHeight");
@@ -40,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const applyBtn = document.getElementById("applyBtn");
   const resetBtn = document.getElementById("resetBtn");
+  const loadBtn = document.getElementById("loadBtn");
 
   const fontSizeValue = document.getElementById("fontSizeValue");
   const lineHeightValue = document.getElementById("lineHeightValue");
@@ -88,5 +131,10 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       });
     });
+  });
+
+  //load data
+  loadBtn.addEventListener("click", () => {
+    fetchUserSettings(2020);
   });
 });
