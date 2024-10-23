@@ -23,7 +23,7 @@ const getUserSettings = async (req, res) => {
 // Save or update settings for a specific user
 const saveUserSettings = async (req, res) => {
   const { userId } = req.params;
-  const { font, lineHeight, bgColor, textColor } = req.body;
+  const { name, font, lineHeight, bgColor, textColor } = req.body;
 
   try {
     let userSettings = await Settings.findOne({ userId });
@@ -32,11 +32,17 @@ const saveUserSettings = async (req, res) => {
       // If no settings exist for this user, create a new document
       userSettings = new Settings({
         userId,
-        settings: [{ font, lineHeight, bgColor, textColor }],
+        settings: [{ name, font, lineHeight, bgColor, textColor }],
       });
     } else {
       // Append new settings to the existing array of settings
-      userSettings.settings.push({ font, lineHeight, bgColor, textColor });
+      userSettings.settings.push({
+        name,
+        font,
+        lineHeight,
+        bgColor,
+        textColor,
+      });
     }
 
     await userSettings.save();

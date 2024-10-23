@@ -4,6 +4,11 @@ const SettingsSchema = new mongoose.Schema({
   userId: { type: String, required: true },
   settings: [
     {
+      name: {
+        type: String,
+        default: "dark mode", // The name of the saved setting (preset)
+        required: true,
+      },
       font: { type: String, default: "16px" },
       lineHeight: { type: String, default: "1.5" },
       bgColor: { type: String, default: "#ffffff" },

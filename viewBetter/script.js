@@ -57,7 +57,6 @@ const fetchUserSettings = async (userId) => {
     const settings = await response.json();
     console.log(settings.settings[0]);
 
-    // Now apply these settings to the current page
     applySettings(settings.settings[0]);
   } catch (error) {
     console.error("Error fetching settings:", error);
@@ -68,8 +67,6 @@ fetchUserSettings(2020);
 
 const applySettings = (settings) => {
   const { font, lineHeight, bgColor, textColor } = settings;
-
-  // Trigger the Chrome Scripting API to apply the settings
 
   executeScript(font, lineHeight, bgColor, textColor)();
 };
