@@ -72,6 +72,22 @@ button {
   cursor: pointer;
   transition: background-color 0.3s;
 }
+a {
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #005a9e;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+a:hover {
+  background-color: #0078d7;
+}
 
 button:hover {
   background-color: #0078d7;

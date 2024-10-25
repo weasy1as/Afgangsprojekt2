@@ -68,7 +68,7 @@ fetchUserSettings(2020);
 const applySettings = (settings) => {
   const { font, lineHeight, bgColor, textColor } = settings;
 
-  executeScript(font, lineHeight, bgColor, textColor)();
+  // executeScript(font, lineHeight, bgColor, textColor)();
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -128,10 +128,5 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       });
     });
-  });
-
-  //load data
-  loadBtn.addEventListener("click", () => {
-    fetchUserSettings(2020);
   });
 });
