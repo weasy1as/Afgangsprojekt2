@@ -6,7 +6,7 @@ const SettingsSchema = new mongoose.Schema({
     {
       name: {
         type: String,
-        default: "dark mode", // The name of the saved setting (preset)
+        default: "dark mode",
         required: true,
       },
       font: { type: String, default: "16px" },

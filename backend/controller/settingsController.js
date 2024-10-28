@@ -1,4 +1,3 @@
-// controllers/settingsController.js
 const Settings = require("../models/settings");
 
 // Retrieve settings for a specific user
@@ -35,7 +34,7 @@ const saveUserSettings = async (req, res) => {
         settings: [{ name, font, lineHeight, bgColor, textColor }],
       });
     } else {
-      // Append new settings to the existing array of settings
+      // add new settings to the existing array of settings
       userSettings.settings.push({
         name,
         font,
@@ -52,4 +51,26 @@ const saveUserSettings = async (req, res) => {
   }
 };
 
-module.exports = { getUserSettings, saveUserSettings };
+// DELETE /api/settings/:userId/:settingId
+const deleteUserSetting = async (req, res) => {
+  const { userId, settingId } = req.params;
+
+  try {
+    const userSettings = await Settings.findOne({ userId });
+    if (!userSettings)
+      return res
+        .status(404)
+        .json({ message: "No settings found for this user" });
+
+    userSettings.settings = userSettings.settings.filter(
+      (setting) => setting._id.toString() !== settingId
+    );
+
+    await userSettings.save();
+    res.status(200).json({ message: "Setting deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { getUserSettings, saveUserSettings, deleteUserSetting };

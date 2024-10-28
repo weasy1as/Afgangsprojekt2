@@ -32,6 +32,44 @@ const executeScript = (font, lineHeight, bgColor, textbgColorInput) => {
   };
 };
 
+//Database
+const saveUserSettings = async (
+  userId,
+  name,
+  font,
+  lineHeight,
+  bgColor,
+  textColor
+) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/settings/${userId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          font,
+          lineHeight,
+          bgColor,
+          textColor,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to save user settings");
+    }
+
+    const result = await response.json();
+    console.log("Settings saved:", result);
+  } catch (error) {
+    console.error("Error saving settings:", error);
+  }
+};
+
 var id;
 function getInfo() {
   chrome.identity.getProfileUserInfo((info) => {
@@ -43,43 +81,17 @@ function getInfo() {
 
 getInfo();
 
-//database
-const fetchUserSettings = async (userId) => {
-  try {
-    const response = await fetch(
-      `http://localhost:8080/api/settings/${userId}`
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch user settings");
-    }
-
-    const settings = await response.json();
-    console.log(settings.settings[0]);
-
-    applySettings(settings.settings[0]);
-  } catch (error) {
-    console.error("Error fetching settings:", error);
-  }
-};
-
-fetchUserSettings(2020);
-
-const applySettings = (settings) => {
-  const { font, lineHeight, bgColor, textColor } = settings;
-
-  // executeScript(font, lineHeight, bgColor, textColor)();
-};
-
 document.addEventListener("DOMContentLoaded", () => {
   const fontSizeInput = document.getElementById("fontSize");
   const lineHeightInput = document.getElementById("lineHeight");
   const bgColorInput = document.getElementById("bgColor");
   const textbgColorInput = document.getElementById("textbgColor");
+  const nameInput = document.getElementById("name");
 
   const applyBtn = document.getElementById("applyBtn");
   const resetBtn = document.getElementById("resetBtn");
-  const loadBtn = document.getElementById("loadBtn");
+  const popupSave = document.getElementById("popup-save");
+  const saveBtn = document.getElementById("saveBtn");
 
   const fontSizeValue = document.getElementById("fontSizeValue");
   const lineHeightValue = document.getElementById("lineHeightValue");
@@ -99,6 +111,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const textcolor = textbgColorInput.value;
 
     executeScript(fontSize, lineHeight, bgColor, textcolor)();
+  });
+
+  saveBtn.addEventListener("click", () => {
+    document.getElementById("setName").style.display = "flex";
+  });
+
+  popupSave.addEventListener("click", () => {
+    document.getElementById("setName").style.display = "none";
+    const fontSize = `${fontSizeInput.value}px`;
+    const lineHeight = lineHeightInput.value;
+    const bgColor = bgColorInput.value;
+    const textcolor = textbgColorInput.value;
+    const PresetName = nameInput.value;
+
+    saveUserSettings(
+      2020,
+      PresetName,
+      fontSize,
+      lineHeight,
+      bgColor,
+      textcolor
+    );
   });
 
   resetBtn.addEventListener("click", () => {

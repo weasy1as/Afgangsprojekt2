@@ -27,6 +27,7 @@ li {
 }
 .setting-label {
   font-weight: bold;
+  font-size: 20px;
 }
 
 a {
@@ -38,4 +39,18 @@ a {
 
 a:hover {
   font-size: larger;
+}
+
+.delete-btn {
+  background-color: #d11a2a;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.activate-btn {
+  background-color: #04aa6d;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
 }

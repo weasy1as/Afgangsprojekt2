@@ -61,7 +61,27 @@ const fetchUserSettings = async (userId) => {
   }
 };
 
-// Function to dynamically display the settings in the list
+// Delete a specific setting by ID
+const deleteUserSetting = async (userId, settingId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/settings/${userId}/${settingId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) throw new Error("Failed to delete setting");
+
+    console.log("Setting deleted successfully");
+
+    fetchUserSettings(userId);
+  } catch (error) {
+    console.error("Error deleting setting:", error);
+  }
+};
+
+// Function to display the settings in the list
 const displaySettings = (settingsArray) => {
   const settingsList = document.getElementById("settingsList");
   settingsList.innerHTML = "";
@@ -73,18 +93,24 @@ const displaySettings = (settingsArray) => {
         <div>
           <span class="setting-label">Preset Name: ${setting.name}</span>
         </div>
+        <button class="activate-btn">Activate</button>
+      <button class="delete-btn">Delete</button>
       `;
 
-    // Add click event listener to apply the selected setting
-    listItem.addEventListener("click", () => {
+    // Add Activate button event listener
+    listItem.querySelector(".activate-btn").addEventListener("click", () => {
       applySettings(setting);
+    });
+
+    // Add Delete button event listener
+    listItem.querySelector(".delete-btn").addEventListener("click", () => {
+      deleteUserSetting(2020, setting._id);
     });
 
     settingsList.appendChild(listItem);
   });
 };
 
-// Load settings when the page is ready
 document.addEventListener("DOMContentLoaded", () => {
   const userId = 2020;
   fetchUserSettings(userId);
