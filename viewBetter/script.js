@@ -32,6 +32,25 @@ const executeScript = (font, lineHeight, bgColor, textbgColorInput) => {
   };
 };
 
+var userId = null;
+function getInfo(callback) {
+  chrome.identity.getProfileUserInfo(
+    { accountStatus: "ANY" },
+    function (userInfo) {
+      const email = userInfo.email || "Email not available";
+      userId = userInfo.id || "ID not available";
+      console.log("email: " + email + " id: " + userId);
+      if (callback) callback(userId);
+    }
+  );
+}
+
+// Usage
+getInfo((userId) => {
+  console.log("User ID:", userId);
+  // You can use userId here
+});
+
 //Database
 const saveUserSettings = async (
   userId,
@@ -69,17 +88,6 @@ const saveUserSettings = async (
     console.error("Error saving settings:", error);
   }
 };
-
-var id;
-function getInfo() {
-  chrome.identity.getProfileUserInfo((info) => {
-    email = info.email;
-    id = info.id;
-    console.log(email + " id:" + info.id);
-  });
-}
-
-getInfo();
 
 document.addEventListener("DOMContentLoaded", () => {
   const fontSizeInput = document.getElementById("fontSize");
@@ -126,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const PresetName = nameInput.value;
 
     saveUserSettings(
-      2020,
+      userId,
       PresetName,
       fontSize,
       lineHeight,

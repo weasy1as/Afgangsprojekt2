@@ -1,3 +1,21 @@
+//get user info from chrome
+var userId = null;
+function getInfo(callback) {
+  chrome.identity.getProfileUserInfo(
+    { accountStatus: "ANY" },
+    function (userInfo) {
+      const email = userInfo.email || "Email not available";
+      userId = userInfo.id || "ID not available";
+      console.log("email: " + email + " id: " + userId);
+      if (callback) callback(userId);
+    }
+  );
+}
+
+getInfo((userId) => {
+  console.log("User ID:", userId);
+});
+
 // Function to apply settings
 const applySettings = (settings) => {
   const { font, lineHeight, bgColor, textColor } = settings;
@@ -112,6 +130,5 @@ const displaySettings = (settingsArray) => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  const userId = 2020;
   fetchUserSettings(userId);
 });
