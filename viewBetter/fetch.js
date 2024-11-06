@@ -122,7 +122,7 @@ const displaySettings = (settingsArray) => {
 
     // Add Delete button event listener
     listItem.querySelector(".delete-btn").addEventListener("click", () => {
-      deleteUserSetting(2020, setting._id);
+      deleteUserSetting(userId, setting._id);
     });
 
     settingsList.appendChild(listItem);
@@ -130,5 +130,7 @@ const displaySettings = (settingsArray) => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetchUserSettings(userId);
+  getInfo((userId) => {
+    fetchUserSettings(userId);
+  });
 });

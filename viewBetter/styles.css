@@ -114,4 +114,14 @@ button:focus {
   border: 3px solid #f1f1f1;
   border-radius: 25px;
   z-index: 9;
+  font-size: medium;
+}
+
+.btns {
+  display: flex;
+  gap: 3px;
+}
+
+#popup-close {
+  background-color: #d11a2a;
 }

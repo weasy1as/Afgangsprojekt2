@@ -99,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const applyBtn = document.getElementById("applyBtn");
   const resetBtn = document.getElementById("resetBtn");
   const popupSave = document.getElementById("popup-save");
+  const popupClose = document.getElementById("popup-close");
   const saveBtn = document.getElementById("saveBtn");
 
   const fontSizeValue = document.getElementById("fontSizeValue");
@@ -125,13 +126,22 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("setName").style.display = "flex";
   });
 
+  popupClose.addEventListener("click", () => {
+    document.getElementById("setName").style.display = "none";
+  });
+
   popupSave.addEventListener("click", () => {
+    const PresetName = nameInput.value.trim();
+
+    if (!PresetName) {
+      alert("Please enter a name for the preset.");
+      return;
+    }
     document.getElementById("setName").style.display = "none";
     const fontSize = `${fontSizeInput.value}px`;
     const lineHeight = lineHeightInput.value;
     const bgColor = bgColorInput.value;
     const textcolor = textbgColorInput.value;
-    const PresetName = nameInput.value;
 
     saveUserSettings(
       userId,
