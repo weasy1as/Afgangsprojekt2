@@ -45,10 +45,8 @@ function getInfo(callback) {
   );
 }
 
-// Usage
 getInfo((userId) => {
   console.log("User ID:", userId);
-  // You can use userId here
 });
 
 //Database
