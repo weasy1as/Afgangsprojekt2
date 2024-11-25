@@ -38,7 +38,7 @@ function getInfo(callback) {
     { accountStatus: "ANY" },
     function (userInfo) {
       const email = userInfo.email || "Email not available";
-      userId = userInfo.id || "ID not available";
+      userId = userInfo.id || null;
       console.log("email: " + email + " id: " + userId);
       if (callback) callback(userId);
     }
@@ -58,6 +58,11 @@ const saveUserSettings = async (
   bgColor,
   textColor
 ) => {
+  if (userId == null) {
+    alert("Log into google account to save");
+    console.error("Error: userId is required to save settings.");
+    return;
+  }
   try {
     const response = await fetch(
       `http://localhost:8080/api/settings/${userId}`,
